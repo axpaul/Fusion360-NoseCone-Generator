@@ -5,14 +5,33 @@ A Python-based script for Autodesk Fusion 360 designed to automatically generate
 ## Features
 
 - **Integrated User Interface**: A single dialog box to configure all parameters at once.
-- **5 Supported Profile Types**:
-  - **Tangent**: Standard profile for a smooth transition to the body tube.
-  - **Parabolic**: Excellent performance for subsonic flight.
-  - **Von Kármán (Haack Series)** : Mathematically optimized for minimum drag at supersonic speeds.
-  - **Conic**: Simple straight-line geometry.
-  - **Elliptical**: Rounded nose, popular for subsonic sport rocketry.
 - **Full Parameter Control**: Adjustable length, diameter, and precision (number of points).
-- **Ready for Revolution**: Generates a closed profile that can be immediately used with the Fusion 360 "Revolve" tool.
+- **Supports Multiple Aerodynamic Profiles**: Choose from the most common nose cone geometries, mathematically validated and ready for revolution.
+
+### Supported Profiles Gallery
+
+<table>
+  <tr>
+    <td align="center">
+      <img src="https://raw.githubusercontent.com/axpaul/Fusion360-NoseCone-Generator/main/Ogive_Tangent_150mm.png" width="200px"/><br/>
+      <b>Tangent Ogive</b>
+    </td>
+    <td align="center">
+      <img src="https://raw.githubusercontent.com/axpaul/Fusion360-NoseCone-Generator/main/Ogive_Von%20Karman_150mm.png" width="200px"/><br/>
+      <b>Von Kármán</b>
+    </td>
+  </tr>
+  <tr>
+    <td align="center">
+      <img src="https://raw.githubusercontent.com/axpaul/Fusion360-NoseCone-Generator/main/Ogive_Conic_150mm.png" width="200px"/><br/>
+      <b>Conic</b>
+    </td>
+    <td align="center">
+      <img src="https://raw.githubusercontent.com/axpaul/Fusion360-NoseCone-Generator/main/Ogive_Elliptical_150mm.png" width="200px"/><br/>
+      <b>Elliptical</b>
+    </td>
+  </tr>
+</table>
 
 ## Installation
 
@@ -20,23 +39,22 @@ A Python-based script for Autodesk Fusion 360 designed to automatically generate
 2. In **Autodesk Fusion 360**, navigate to the **Utilities** tab > **Add-ins** > **Scripts and Add-ins**.
 3. Click the **Scripts** tab and then the **Create** button.
 4. Name it `OgiveGenerator`.
-5. An editor window will open (VS Code or similar). Replace the default code with the content of `OgiveGenerator.py`.
-6. Save the file and return to Fusion 360.
-7. Select the script in the list and click **Run**.
+5. An editor window will open. Replace the default code with the content of `OgiveGenerator.py`.
+6. Save and return to Fusion 360.
+7. Select the script and click **Run**.
 
 ## Usage
 
 1. Launch the script.
 2. Select the **Nose Cone Type** from the dropdown menu.
 3. Enter the **Length** and **Base Diameter** (in mm).
-4. Set the **Precision** (number of points). *Recommendation: Use 50+ points for Von Kármán profiles.*
-5. Click **OK**. A sketch will be created at the origin of the active component.
-6. Use the **Revolve** tool in Fusion 360, selecting the generated profile and the X-axis as the axis of revolution.
-
-## Technical Details
-
-The script implements standard aerodynamic equations for nose cone design as documented in aerospace literature and [Wikipedia](https://en.wikipedia.org/wiki/Nose_cone_design).
+4. Set the **Precision** (number of points).
+5. Click **OK**. A closed sketch will be created at the origin.
+6. Use the **Revolve** tool in Fusion 360 with the X-axis as the axis of revolution.
 
 ## License
 
-This project is licensed under the GNU General Public License v3.0 - see the LICENSE file for details.
+This work is licensed under a [Creative Commons Attribution-NonCommercial-ShareAlike 4.0 International License](https://creativecommons.org/licenses/by-nc-sa/4.0/).
+
+---
+*Created for the rocketry community.*
