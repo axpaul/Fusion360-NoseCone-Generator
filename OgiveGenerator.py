@@ -1,3 +1,6 @@
+## Author : Paul Miailhe
+## Date : 010/04/2026
+
 import adsk.core, adsk.fusion, traceback
 import math
 
@@ -91,6 +94,50 @@ class NoseConeCommandCreatedHandler(adsk.core.CommandCreatedEventHandler):
         except:
             adsk.core.Application.get().userInterface.messageBox(traceback.format_exc())
 
+# --- GESTION DE L'ARRÊT DU SCRIPT ---
+class NoseConeCommandDestroyHandler(adsk.core.CommandEventHandler):
+    def __init__(self):
+        super().__init__()
+    def notify(self, args):
+        # Cette fonction s'exécute quand la fenêtre se ferme (OK ou Annuler)
+        # Elle force l'arrêt propre du script en mémoire
+        adsk.terminate()
+
+class NoseConeCommandCreatedHandler(adsk.core.CommandCreatedEventHandler):
+    def __init__(self):
+        super().__init__()
+    def notify(self, args):
+        try:
+            cmd = args.command
+            inputs = cmd.commandInputs
+
+            # (Garder tes inputs ici...)
+            drop = inputs.addDropDownCommandInput('type_ogive', 'Type d\'ogive', adsk.core.DropDownStyles.LabeledIconDropDownStyle)
+            drop.listItems.add('Tangent', True)
+            drop.listItems.add('Parabolic', False)
+            drop.listItems.add('Von Karman', False)
+            drop.listItems.add('Conic', False)
+            drop.listItems.add('Elliptical', False)
+
+            inputs.addValueInput('longueur', 'Length', 'mm', adsk.core.ValueInput.createByReal(15))
+            inputs.addValueInput('diametre', 'Diameter', 'mm', adsk.core.ValueInput.createByReal(4))
+            
+            slider = inputs.addIntegerSliderCommandInput('nb_points', 'Precision', 2, 100, False)
+            slider.valueOne = 40
+
+            # --- AJOUT DES HANDLERS ---
+            onExecute = NoseConeCommandExecuteHandler()
+            cmd.execute.add(onExecute)
+            handlers.append(onExecute)
+
+            # Ajout du handler de destruction (IMPORTANT)
+            onDestroy = NoseConeCommandDestroyHandler()
+            cmd.destroy.add(onDestroy)
+            handlers.append(onDestroy)
+
+        except:
+            adsk.core.Application.get().userInterface.messageBox(traceback.format_exc())
+
 handlers = []
 
 def run(context):
@@ -103,14 +150,16 @@ def run(context):
         if cmdDef:
             cmdDef.deleteMe()
         
-        cmdDef = ui.commandDefinitions.addButtonDefinition('NoseConeGenV2', 'Générateur d\'Ogive', 'Crée un profil d\'ogive')
+        cmdDef = ui.commandDefinitions.addButtonDefinition('NoseConeGenV2', 'Nose Cone Generator', 'Creates a nose cone profile')
 
         onCommandCreated = NoseConeCommandCreatedHandler()
         cmdDef.commandCreated.add(onCommandCreated)
         handlers.append(onCommandCreated)
 
         cmdDef.execute()
+        
+        # On garde le script "vivant" tant que la fenêtre est ouverte
         adsk.autoTerminate(False)
     except:
         if ui:
-            ui.messageBox('Erreur :\n{}'.format(traceback.format_exc()))
+            ui.messageBox('Error:\n{}'.format(traceback.format_exc()))
